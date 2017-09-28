@@ -31,8 +31,11 @@ class Pimgento_Attribute_Helper_Data extends Mage_Core_Helper_Data
 
         $specific = unserialize(Mage::getStoreConfig('pimdata/attribute/types'));
 
-        foreach ($specific as $type) {
-            $types[$type['pimgento_type']] = $this->_types($type['magento_type']);
+        $specific = unserialize(Mage::getStoreConfig('pimdata/attribute/types'));
+        if(true === is_array($specific)){
+            foreach ($specific as $type) {
+                $types[$type['pimgento_type']] = $this->_types($type['magento_type']);
+            }
         }
 
         return $types;
