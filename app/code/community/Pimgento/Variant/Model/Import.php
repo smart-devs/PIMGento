@@ -70,7 +70,7 @@ class Pimgento_Variant_Model_Import extends Pimgento_Core_Model_Import_Abstract
     {
         $adapter  = $this->getAdapter();
 
-        $column = $this->columnExists('axis') ? 'axis' : 'attributes';
+        $column = $this->columnExists('axis') ? 'axis' : $this->columnExists('axes') ? 'axes' : 'attributes';;
 
         $select = $adapter->select()
             ->from(
@@ -90,7 +90,11 @@ class Pimgento_Variant_Model_Import extends Pimgento_Core_Model_Import_Abstract
         $query = $adapter->query($select);
         $progressedAttributes = array();
         while ($row = $query->fetch()) {
-            $axis = explode(',', $row['axis']);
+            if(true === isset($row['axes'])){
+                $axis = explode(',', $row['axes']);
+            }else{
+                $axis = explode(',', $row['axis']);
+            }
             foreach ($axis as $singleAx) {
                 if (!in_array($singleAx, $progressedAttributes)) {
                     /** @var Mage_Eav_Model_Attribute $attributeModel */
